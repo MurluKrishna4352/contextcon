@@ -1,6 +1,7 @@
 // Only load .env file in local development — Vercel injects env vars natively
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+  const path = require('path')
+  require('dotenv').config({ path: path.join(__dirname, '../.env') })
 }
 
 const REQUIRED = ['OPENAI_API_KEY', 'CRUSTDATA_API_KEY']
