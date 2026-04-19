@@ -1,10 +1,17 @@
-require('dotenv').config()
+// Only load .env file in local development — Vercel injects env vars natively
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 const REQUIRED = ['OPENAI_API_KEY', 'CRUSTDATA_API_KEY']
 
 for (const key of REQUIRED) {
   if (!process.env[key]) {
     console.error(`[FATAL] Missing required env var: ${key}`)
+    // In serverless, don't kill the process — let the request fail gracefully
+    if (process.env.VERCEL) {
+      break
+    }
     process.exit(1)
   }
 }
